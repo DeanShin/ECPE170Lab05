@@ -26,6 +26,8 @@ void free_vec(vec_ptr ptr);
 // Return 0 (out of bounds) or 1 (successful)
 int get_vec_element(vec_ptr v, long int index, data_t *dest);
 
+data_t* get_vec_start(vec_ptr v);
+
 // Get vector length
 long int vec_length(vec_ptr v);
 

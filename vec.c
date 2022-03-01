@@ -69,6 +69,11 @@ int get_vec_element(vec_ptr v, long int index, data_t *dest)
   return 1;
 }
 
+data_t* get_vec_start(vec_ptr v)
+{
+  return v->data;
+}
+
 // Return length of vector
 long int vec_length(vec_ptr v)
 {

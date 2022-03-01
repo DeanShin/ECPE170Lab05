@@ -16,12 +16,11 @@ void combine1(vec_ptr v, data_t *dest)
 
   *dest = IDENT;
 
-  for(i=0; i < vec_length(v); i++)
-    {
-      data_t val;
-      get_vec_element(v, i, &val);
-      *dest = *dest OP val;
-    }
+  for(i=0; i < vec_length(v); i++) {
+    data_t val;
+    get_vec_element(v, i, &val);
+    *dest = *dest OP val;
+  }
 }
 
 
@@ -38,6 +37,16 @@ void combine2(vec_ptr v, data_t *dest)
 
   // XXX - STUDENT CODE GOES HERE - XXX
 
+  long int i;
+  long int len = vec_length(v);
+
+  *dest = IDENT;
+
+  for(i=0; i < len; i++) {
+    data_t val;
+    get_vec_element(v, i, &val);
+    *dest = *dest OP val;
+  }
 }
 
 
@@ -54,6 +63,15 @@ void combine3(vec_ptr v, data_t *dest)
 
   // XXX - STUDENT CODE GOES HERE - XXX
 
+  long int i;
+  long int len = vec_length(v);
+  data_t* data = get_vec_start(v);
+
+  *dest = IDENT;
+
+  for(i=0; i < len; i++) {
+    *dest = *dest OP data[i];
+  }
 }
 
 
@@ -71,6 +89,17 @@ void combine4(vec_ptr v, data_t *dest)
 
   // XXX - STUDENT CODE GOES HERE - XXX
 
+  long int i;
+  long int len = vec_length(v);
+  data_t* data = get_vec_start(v);
+
+  data_t accumulate = IDENT;
+
+  for(i=0; i < len; i++) {
+    accumulate = accumulate OP data[i];
+  }
+
+  *dest = accumulate;
 }
 
 
@@ -83,6 +112,23 @@ void combine5x2(vec_ptr v, data_t *dest)
 
   // XXX - STUDENT CODE GOES HERE - XXX
 
+  long int i;
+  long int len = vec_length(v);
+  // to not repeat len - 1
+  long int forLen = len - 1;
+  data_t* data = get_vec_start(v);
+
+  data_t accumulate = IDENT;
+
+  for(i=0; i < forLen; i += 2) {
+    accumulate = accumulate OP data[i] OP data[i + 1];
+  }
+
+  if(i < len) {
+    accumulate = accumulate OP data[i];
+  }
+
+  *dest = accumulate;
 }
 
 // LOOP UNROLLING x3
@@ -94,6 +140,26 @@ void combine5x3(vec_ptr v, data_t *dest)
 
   // XXX - STUDENT CODE GOES HERE - XXX
 
+  long int i;
+  long int len = vec_length(v);
+  // to not repeat len - 2
+  long int forLen = len - 2;
+  data_t* data = get_vec_start(v);
+
+  data_t accumulate = IDENT;
+
+  for(i=0; i < forLen; i += 3) {
+    accumulate = accumulate OP data[i] OP data[i + 1] OP data[i + 2];
+  }
+
+  if(i < len - 1) {
+    accumulate = accumulate OP data[i] OP data[i + 1];
+  }
+  else if(i < len) {
+    accumulate = accumulate OP data[i];
+  }
+
+  *dest = accumulate;
 }
 
 
@@ -105,4 +171,23 @@ void combine6(vec_ptr v, data_t *dest)
 
   // XXX - STUDENT CODE GOES HERE - XXX
 
+  long int i;
+  long int len = vec_length(v);
+  // to not repeat len - 1
+  long int forLen = len - 1;
+  data_t* data = get_vec_start(v);
+
+  data_t accumulate0 = IDENT;
+  data_t accumulate1 = IDENT;
+
+  for(i=0; i < forLen; i += 2) {
+    accumulate0 = accumulate0 OP data[i];
+    accumulate1 = accumulate1 OP data[i + 1];
+  }
+
+  if(i < len) {
+    accumulate0 = accumulate0 OP data[i];
+  }
+
+  *dest = accumulate0 OP accumulate1;
 }
